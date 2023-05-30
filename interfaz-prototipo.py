@@ -113,6 +113,7 @@ def iniciar_simulacion():
     def simular_jornada(jornada, equipos, puntos, goleadores):
         print("Jornada", jornada)
         partidos = []
+        e =[]
         for i in range(0, len(equipos), 2):
             equipo_local = equipos[i]
             equipo_visitante = equipos[i+1]
@@ -128,7 +129,7 @@ def iniciar_simulacion():
                 else:
                     res = "Empate"
             except:
-                print()
+                error = e
             
             
 
