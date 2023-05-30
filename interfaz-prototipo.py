@@ -3,6 +3,21 @@ from tkinter import ttk
 import random
 import matplotlib.pyplot as plt
 import sys
+import os
+import numpy as np
+import pandas as pd
+import seaborn as sns
+
+#Obtenemos informacion de la base de datos
+laliga=pd.read_csv('C:\\Users\\carlo\\Documents\\codigos\\python\\proyecto\\LaLiga_Matches_1995-2021.csv')
+laliga.head()
+laliga.shape
+
+laliga20_21=laliga[laliga['Season']=='2020-21'].drop(['Season'],axis=1)
+laliga19_20=laliga[laliga['Season']=='2019-20'].drop(['Season'],axis=1)
+laliga18_19=laliga[laliga['Season']=='2018-19'].drop(['Season'],axis=1)
+laliga17_18=laliga[laliga['Season']=='2017-18'].drop(['Season'],axis=1)
+laliga16_17=laliga[laliga['Season']=='2016-17'].drop(['Season'],axis=1)
 
 class StdoutRedirector:
     def __init__(self, text_widget):
@@ -99,6 +114,24 @@ def iniciar_simulacion():
         print("Jornada", jornada)
         partidos = []
         for i in range(0, len(equipos), 2):
+            equipo_local = equipos[i]
+            equipo_visitante = equipos[i+1]
+
+
+            partido = laliga[(laliga['HomeTeam'] == equipo_local) & (laliga['AwayTeam'] == equipo_visitante)]
+
+            try:
+                if partido['FTHG'].values[0] > partido['FTAG'].values[0]:
+                    res = equipo_local
+                elif partido['FTHG'].values[0] < partido['FTAG'].values[0]:
+                    res = equipo_visitante
+                else:
+                    res = "Empate"
+            except:
+                print()
+            
+            
+
             local = equipos[i]
             visitante = equipos[i+1]
             resultado, goles_local, goles_visitante = simular_partido(local, visitante)
@@ -234,6 +267,8 @@ tabla_goleadores.column('Equipo', width=200)
 tabla_goleadores.column('Jugador', width=200)
 tabla_goleadores.column('Goles', width=80, anchor='center')
 tabla_goleadores.pack(pady=20)
+
+
 
 # Ejecutar la ventana principal
 ventana.mainloop()
